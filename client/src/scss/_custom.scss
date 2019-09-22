@@ -1,0 +1,134 @@
+@mixin displayFlex($justifyContent) {
+    display: flex;
+    align-items: center;
+    justify-content: $justifyContent
+}
+
+@mixin grayBtn {
+    background: $grayColor;
+    color: $redColor;
+    padding: 10px 15px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border: none;
+    font-family: gothamBold;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover, &:active, &:focus {
+        outline: none
+    }
+}
+
+a {
+    text-decoration: none
+}
+
+header {
+    padding: 40px;
+    @include displayFlex(normal);
+    justify-content: space-between;
+    font-family: gothamBold;
+    font-size: 14px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: -150px;
+        z-index: -1;
+        background-image: url("../assets/img/header_gradient.png");
+        background-repeat: repeat-x;
+        background-size: contain;
+    }
+}
+
+.logo {
+    width: 300px;
+
+    img {
+        display: block;
+        max-width: 100%;
+    }
+}
+
+.navbar-nav {
+    @include displayFlex(flex-end);
+    flex-grow: 1;
+
+    .user {
+        @include displayFlex(normal);
+    }
+    
+    .user {
+        a, button {
+            margin: 0 10px;
+            padding: 10px 15px;
+        }
+    }
+
+    .user button {
+        @include grayBtn;
+        margin-right: 0;
+    }
+
+    .user a {
+        color: $redColor;
+    }
+}
+
+.searchbox {
+    button, input {
+        @include grayBtn;
+    }
+    
+    @include displayFlex(flex-end);
+    flex-grow: 1;
+    margin-left: 20%;
+    padding: 0 10px;
+
+    input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        color: #333;
+        cursor: auto;
+        flex-grow: 1;
+        max-width: 640px;
+    }
+
+    button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+
+.home {
+    display: grid;
+    grid-template-columns: 60% 40%;
+
+    .tagline, .ladbrokes {
+        height: 100vh
+    }
+}
+
+.tagline {
+    background: url("../assets/img/playful_tagline.png") no-repeat;
+    background-size: 80%;
+    background-position: center 60%;
+}
+
+.ladbrokes {
+    background: url("../assets/img/L.png") no-repeat;
+    background-size: cover;
+    background-position: left top;
+}
