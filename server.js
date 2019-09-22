@@ -16,4 +16,14 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
+// if in production
+const path = require("path");
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client/buid"));
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    })
+}
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
