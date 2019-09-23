@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
-// import Gallery from 'react-photo-gallery';
-// import { photos } from './../../photos';
+import ReactModal from 'react-modal';
 
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 const Gallery = React.lazy(() => import('./../../components/Gallery/Gallery'));
 
 class DefaultLayout extends Component {
+
+    state = {
+        showModal: false
+    }
+
+    handleOpenModal = () => {
+        console.log('haha')
+        this.setState({ showModal: true })
+    }
+
+    handleCloseModal = () => {
+        this.setState({ showModal: false })
+    }
+
     render() {
 
         const photos = [
@@ -36,6 +49,8 @@ class DefaultLayout extends Component {
             }
         ]
 
+        const { showModal } = this.state;
+
         return (
             <>
                 <DefaultHeader/>
@@ -47,7 +62,16 @@ class DefaultLayout extends Component {
                     </section>
 
                     <section className="gallery-wrapper">
-                        <Gallery photos={photos} columns={4}/>
+                        <Gallery
+                            photos={photos}
+                            columns={4}
+                            handleOpenModal={this.handleOpenModal}
+                        />
+
+                        <ReactModal 
+                            isOpen={showModal}
+                            contentLabel="Minimal Modal Example"
+                        />
                     </section>
                 </div>
             </>
