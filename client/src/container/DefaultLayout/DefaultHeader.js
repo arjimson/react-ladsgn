@@ -6,19 +6,19 @@ class DefaultHeader extends Component {
     render() {
         return (
             <header>
-                <div class="logo">
+                <div className="logo">
                     <a href="#">
                         <img src={logo} alt="Ladsgn Logo" />
                     </a>
                 </div>
 
-                <div class="navbar-nav">
-                    <div class="searchbox">
+                <div className="navbar-nav">
+                    <div className="searchbox">
                         <input type="text"/>
                         <button type="button">•••</button>
                     </div>
 
-                    <div class="user">
+                    <div className="user">
                         <a href="#">dondeedaga</a>
 
                         <button>Log out</button>
