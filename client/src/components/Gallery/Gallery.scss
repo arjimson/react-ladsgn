@@ -4,25 +4,42 @@
 }
 
 .gallery {
-    display: flex
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .gallery__item {
     flex: 25%;
     max-width: 25%;
-    padding: 10px;
 
     a {
         display: block;
-        margin-bottom: 20px;
+        padding: 10px;
     }
 
     img {
         width: 100%;
         display: block;
     }
+}
 
-    &:last-child {
-        padding-right: 0;
+@media (max-width: 979px) {
+    .gallery__item {
+        flex: 25%;
+        max-width: 25%;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery__item {
+        flex: 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery__item {
+        flex: 100%;
+        max-width: 100%;
     }
 }

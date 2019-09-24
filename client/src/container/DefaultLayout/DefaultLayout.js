@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import ReactModal from 'react-modal';
 
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
-
 const Gallery = React.lazy(() => import('./../../components/Gallery/Gallery'));
+const Modal = React.lazy(() => import('../../components/Modal/Modal'));
 
 class DefaultLayout extends Component {
 
@@ -68,9 +67,9 @@ class DefaultLayout extends Component {
                             handleOpenModal={this.handleOpenModal}
                         />
 
-                        <ReactModal 
-                            isOpen={showModal}
-                            contentLabel="Minimal Modal Example"
+                        <Modal
+                            showModal={showModal}
+                            handleCloseModal={this.handleCloseModal}
                         />
                     </section>
                 </div>
