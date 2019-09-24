@@ -55,7 +55,7 @@ class DefaultLayout extends Component {
                 <DefaultHeader/>
                 
                 <div className="content">
-                    <h1>Arjimson</h1>
+                    <h1>Bero</h1>
                     <section className="home">
                         <div className="tagline"></div>
                         <div className="ladbrokes"></div>
