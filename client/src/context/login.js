@@ -7,7 +7,8 @@ const State = React.createContext()
 const Dispatch = React.createContext()
 
 export const initialState = {
-    modalShow : false,
+    loginModalOpen : false,
+    registerModalOpen : false,
     isAuthenticated: false,
     user: null,
     token: null
@@ -17,13 +18,14 @@ export const initialState = {
 const reducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN':
-            localStorage.setItem("user", JSON.stringify(action.payload.user))
-            localStorage.setItem("token", JSON.stringify(action.payload.token));
+            // localStorage.setItem("user", JSON.stringify(action.payload.user))
+            // localStorage.setItem("token", JSON.stringify(action.payload.token));
             return {
                 ...state,
                 isAuthenticated: true,
-                user: action.payload.user,
-                token: action.payload.token
+                loginModalOpen : true
+                // user: action.payload.user,
+                // token: action.payload.token
             }
         case 'LOGOUT':
             return {
@@ -50,7 +52,7 @@ const Provider = ({ children }) => {
 }
 
 
-export const Blog = {
+export const Login = {
     State,
     Dispatch,
     Provider,
