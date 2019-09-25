@@ -16,28 +16,6 @@ app.use(express.json());
 //   .then(() => console.log("MongoDB connected"))
 //   .catch(err => console.log(err));
 
-// nedb
-const Datastore = require('nedb');
-const sample = new Datastore({ filename: './nedb/sample.db', autoload: true })
-
-let user = {
-  name: 'Julie',
-  email: 'lalata.remo@gmail.com'
-}
-
-// insert
-sample.insert(user, (err, doc) => {
-  console.log('Inserted', doc.name)
-});
-
-// find
-sample.find({}, (err, doc) => {
-  doc.map((d) => {
-    console.log('Found user: ', d.name)
-  })
-})
-
-
 // if in production
 const path = require("path");
 if (process.env.NODE_ENV === "production") {
@@ -47,5 +25,9 @@ if (process.env.NODE_ENV === "production") {
         res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
     })
 }
+
+const posts = require('./routes/api/posts');
+
+app.use('/api/posts', posts);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
