@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require('body-parser');
 const cors = require("cors");
 const config = require("config");
 const port = process.env.PORT || 5000;
@@ -7,7 +8,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json())
 
 // const db = config.get("mongoURI");
 
@@ -17,6 +18,7 @@ app.use(express.json());
 //   .catch(err => console.log(err));
 
 // if in production
+
 const path = require("path");
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
@@ -28,7 +30,6 @@ if (process.env.NODE_ENV === "production") {
 
 const posts = require('./routes/api/posts');
 
-app.use(express.static(__dirname));
 app.use('/api/posts', posts);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

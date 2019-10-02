@@ -8,25 +8,22 @@ const Modal = React.lazy(() => import('../../components/Modal/Modal'));
 class DefaultLayout extends Component {
 
     state = {
-        multerImage: ''
+        selectedFile: null
     }
 
-    uploadImage = (e) => {
-        let imageFormObj = new FormData();
-
-        imageFormObj.append('imageData', e.target.files[0]);
-        imageFormObj.append('imageName', 'multer-image' + Date.now());
-
+    onChangeHandler = e => {
         this.setState({
-            multerImage: URL.createObjectURL(e.target.files[0])
+            selectedFile: e.target.files[0]
         })
+    }
 
-        axios.post('http://localhost:5000/api/posts/uploadmulter', imageFormObj)
+    onClickHandler = e => {
+        const data = new FormData();
+        data.append('file', this.state.selectedFile);
+
+        axios.post('http://localhost:5000/api/posts/', data)
         .then(response => {
-            console.log(imageFormObj)
-        })
-        .catch(err => {
-            console.log(err)
+            console.log(response)
         })
     }
     
@@ -44,7 +41,8 @@ class DefaultLayout extends Component {
                     <section className="gallery-wrapper">
                         <Gallery/>
     
-                        <input type="file" onChange={(e) => this.uploadImage(e)} />
+                        <input type="file" onChange={this.onChangeHandler} />
+                        <button type="button" onClick={this.onClickHandler}>upload</button>
                     </section>
                 </div>
             </React.Fragment>

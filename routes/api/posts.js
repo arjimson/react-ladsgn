@@ -7,40 +7,31 @@ const Datastore = require('nedb');
 const posts = new Datastore({ filename: 'nedb/posts.db', autoload: true });
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './uploads');
+    diskStorage: (req, file, cb) => {
+        cb(null, './public')
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + file.originalname);
+        cb(null, Date.now() + '-' + file.originalname);
     }
 })
 
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-        cb(null, true)
-    } else {
-        cb(null, false)
-    }
-}
-
-const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter
-})
+const upload = multer({ storage: storage }).single('file')
 
 router.get('/', (req, res) => {
     res.send('Haha')
 })
 
-router.route('/uploadmulter').post(upload.single('imageData'), (req, res, next) => {
-    console.log(req.body);
-    let post = {
-        imageName: req.body.imageName,
-        imageData: req.file.path
-    }
+router.post('/', (req, res) => {
+    upload(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            console.log(err)
+            return res.status(500).json(err)
+        } else if (err) {
+            console.log(err)
+            return res.status(500).json(err)
+        }
 
-    posts.insert(post, (err, doc) => {
-        console.log(err)
+        return res.status(200).send(req.file)
     })
 })
 
