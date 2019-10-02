@@ -28,6 +28,7 @@ if (process.env.NODE_ENV === "production") {
 
 const posts = require('./routes/api/posts');
 
+app.use(express.static(__dirname));
 app.use('/api/posts', posts);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -5,54 +5,52 @@ const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 const Gallery = React.lazy(() => import('./../../components/Gallery/Gallery'));
 const Modal = React.lazy(() => import('../../components/Modal/Modal'));
 
-const DefaultLayout = () => {
+class DefaultLayout extends Component {
 
-    const photos = [
-        {
-            img: require('../../assets/img/img-1.png')
-        },
-        {
-            img: require('../../assets/img/img-2.png')
-        },
-        {
-            img: require('../../assets/img/img-3.png')
-        },
-        {
-            img: require('../../assets/img/img-4.png')
-        },
-        {
-            img: require('../../assets/img/img-5.png')
-        },
-        {
-            img: require('../../assets/img/img-6.png')
-        },
-        {
-            img: require('../../assets/img/img-7.png')
-        },
-        {
-            img: require('../../assets/img/img-8.png')
-        }
-    ]
+    state = {
+        multerImage: ''
+    }
 
-    return (
-        <React.Fragment>
-            <DefaultHeader/>
-            
-            <div className="content">
-                <section className="home">
-                    <div className="tagline"></div>
-                    <div className="ladbrokes"></div>
-                </section>
+    uploadImage = (e) => {
+        let imageFormObj = new FormData();
 
-                <section className="gallery-wrapper">
-                    <Gallery
-                        photos={photos}
-                        columns={4}
-                    />
-                </section>
-            </div>
-        </React.Fragment>
-    )
+        imageFormObj.append('imageData', e.target.files[0]);
+        imageFormObj.append('imageName', 'multer-image' + Date.now());
+
+        this.setState({
+            multerImage: URL.createObjectURL(e.target.files[0])
+        })
+
+        axios.post('http://localhost:5000/api/posts/uploadmulter', imageFormObj)
+        .then(response => {
+            console.log(imageFormObj)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+    
+    render() {
+        return (
+            <React.Fragment>
+                <DefaultHeader/>
+                
+                <div className="content">
+                    <section className="home">
+                        <div className="tagline"></div>
+                        <div className="ladbrokes"></div>
+                    </section>
+    
+                    <section className="gallery-wrapper">
+                        <Gallery/>
+    
+                        <input type="file" onChange={(e) => this.uploadImage(e)} />
+                    </section>
+                </div>
+            </React.Fragment>
+        )
+    }
+
 }
 
 export default DefaultLayout;
