@@ -7,32 +7,22 @@ const Datastore = require('nedb');
 const posts = new Datastore({ filename: 'nedb/posts.db', autoload: true });
 
 const storage = multer.diskStorage({
-    diskStorage: (req, file, cb) => {
-        cb(null, './public')
+    destination: (req, file, cb) => {
+        cb(null, __dirname + './../../public')
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
+        cb(null, Date.now() + '-' + file.originalname)
     }
 })
 
-const upload = multer({ storage: storage }).single('file')
+const upload = multer({ storage: storage })
 
 router.get('/', (req, res) => {
     res.send('Haha')
 })
 
-router.post('/', (req, res) => {
-    upload(req, res, (err) => {
-        if (err instanceof multer.MulterError) {
-            console.log(err)
-            return res.status(500).json(err)
-        } else if (err) {
-            console.log(err)
-            return res.status(500).json(err)
-        }
-
-        return res.status(200).send(req.file)
-    })
+router.post('/', upload.single('selectedFile'), (req, res, next) => {
+    console.log(req.file.path)
 })
 
 module.exports = router;

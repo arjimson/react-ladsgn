@@ -19,7 +19,9 @@ class DefaultLayout extends Component {
 
     onClickHandler = e => {
         const data = new FormData();
-        data.append('file', this.state.selectedFile);
+        data.append('selectedFile', this.state.selectedFile);
+
+        console.log(data)
 
         axios.post('http://localhost:5000/api/posts/', data)
         .then(response => {
