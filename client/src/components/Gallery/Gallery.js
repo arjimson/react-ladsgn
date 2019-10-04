@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useFetch } from './../../useFetch';
 
 import './Gallery.scss';
 
@@ -30,6 +32,8 @@ const Gallery = () => {
             img: require('../../assets/img/img-8.png')
         }
     ]);
+
+    useFetch('http://localhost:5000/api/posts')
 
     const [columns, setColumns] = useState('4');
 
