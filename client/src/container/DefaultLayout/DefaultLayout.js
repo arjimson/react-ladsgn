@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 const Gallery = React.lazy(() => import('./../../components/Gallery/Gallery'));
@@ -7,51 +8,30 @@ const Modal = React.lazy(() => import('../../components/Modal/Modal'));
 class DefaultLayout extends Component {
 
     state = {
-        showModal: false
+        selectedFile: null
     }
 
-    handleOpenModal = () => {
-        console.log('haha')
-        this.setState({ showModal: true })
+    onChangeHandler = e => {
+        this.setState({
+            selectedFile: e.target.files[0]
+        })
     }
 
-    handleCloseModal = () => {
-        this.setState({ showModal: false })
-    }
+    onClickHandler = e => {
+        const data = new FormData();
+        data.append('selectedFile', this.state.selectedFile);
 
+        console.log(data)
+
+        axios.post('http://localhost:5000/api/posts/', data)
+        .then(response => {
+            console.log(response)
+        })
+    }
+    
     render() {
-
-        const photos = [
-            {
-                img: require('../../assets/img/img-1.png')
-            },
-            {
-                img: require('../../assets/img/img-2.png')
-            },
-            {
-                img: require('../../assets/img/img-3.png')
-            },
-            {
-                img: require('../../assets/img/img-4.png')
-            },
-            {
-                img: require('../../assets/img/img-5.png')
-            },
-            {
-                img: require('../../assets/img/img-6.png')
-            },
-            {
-                img: require('../../assets/img/img-7.png')
-            },
-            {
-                img: require('../../assets/img/img-8.png')
-            }
-        ]
-
-        const { showModal } = this.state;
-
         return (
-            <>
+            <React.Fragment>
                 <DefaultHeader/>
                 
                 <div className="content">
@@ -59,23 +39,18 @@ class DefaultLayout extends Component {
                         <div className="tagline"></div>
                         <div className="ladbrokes"></div>
                     </section>
-
+    
                     <section className="gallery-wrapper">
-                        <Gallery
-                            photos={photos}
-                            columns={4}
-                            handleOpenModal={this.handleOpenModal}
-                        />
-
-                        <Modal
-                            showModal={showModal}
-                            handleCloseModal={this.handleCloseModal}
-                        />
+                        <Gallery/>
+    
+                        <input type="file" onChange={this.onChangeHandler} />
+                        <button type="button" onClick={this.onClickHandler}>upload</button>
                     </section>
                 </div>
-            </>
+            </React.Fragment>
         )
     }
+
 }
 
 export default DefaultLayout;
