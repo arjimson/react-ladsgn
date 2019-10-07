@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { 
     USER_LOADED,
     USER_LOADING,
@@ -74,8 +72,7 @@ export default function(state = initialState, { type, payload }) {
                 isAuthenticated: true,
                 isLoginShow: false,
                 isRegisterShow: false,
-                isRegisterLoading: false,
-                msg: payload.msg, 
+                isRegisterLoading: false
             }
         case AUTH_ERROR:
         case LOGIN_FAIL:

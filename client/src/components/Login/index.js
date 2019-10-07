@@ -1,12 +1,12 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleLogin, toggleRegister, loginUserAction } from '../../actions/authActions'
 
 export default function () {
-    const { isLoginShow, msg, isAuthenticated } = useSelector(state => state.auth)
+    const { isLoginShow, isAuthenticated } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
-    const [errors, setErrors] = useState({})
+    const [errors, setErrors] = useState([])
     const [login, setLogin] = useState({
         email: "",
         password: ""
@@ -21,11 +21,17 @@ export default function () {
         }
     }, [isAuthenticated])
 
-    const handleLoginSubmit = async (e) => {
+    const handleLoginSubmit = (e) => {
         e.preventDefault()
-        await dispatch(loginUserAction(login))
-
-
+        const { email, password } = login
+        const user = {
+            email, password
+        }
+        const isValid = loginValidation(user)
+        if(isValid.length > 0) {
+           return setErrors(isValid)
+        }
+        dispatch(loginUserAction(user))
     }
 
     const handleInputOnchange = (e) => {
@@ -35,11 +41,6 @@ export default function () {
         })
     }
 
-    const handleRegisterButton = () => {
-
-    }
-
-
     return (
         <form onSubmit={(e) => handleLoginSubmit(e)}>
             <div style={myStyle.loginModal} className={isLoginShow ? "" : "modal-hidden"} >
@@ -48,15 +49,14 @@ export default function () {
                         onClick={() => dispatch(toggleLogin)}></i>
                 </div>
                 <label style={{ color: "#fff", fontSize: "1.5rem", marginBottom: "20px" }}>LOG IN</label>
-                {msg ? <p style={{ color: "#fff" }}>{msg}</p> : ""}
-                {errors.length > 0 && errors.map(err => <p style={{ color: "#fff", fontSize: ".8rem", margin: "5px 0px" }}>{err.msg}</p>)}
+                {errors.length > 0 && errors.map((err,index) => <p key={index} style={{ color: "#fff", fontSize: ".8rem", margin: "5px 0px" }}>{err.msg}</p>)}
                 <input type="text" style={myStyle.loginTextbox} value={login.email} placeholder="username" name="email" onChange={(e) => handleInputOnchange(e)} />
                 <input type="text" style={myStyle.loginTextbox} value={login.password} placeholder="password" name="password" onChange={(e) => handleInputOnchange(e)} />
 
-                <span><a style={myStyle.loginLinks}>Forget username?</a></span>{" "}
-                <span><a style={myStyle.loginLinks}>Forget password?</a></span>
+                <span><a href="#" style={myStyle.loginLinks}>Forget username?</a></span>{" "}
+                <span><a href="#" style={myStyle.loginLinks}>Forget password?</a></span>
                 <button style={{ margin: "10px 0px", width: "100%", fontSize: "1.5rem" }}>LOG IN</button>
-                <span ><a style={{ color: "#fff", textAlign: "center", fontSize: ".8rem", cursor: "pointer" }}
+                <span ><a href="#" style={{ color: "#fff", textAlign: "center", fontSize: ".8rem", cursor: "pointer" }}
                     onClick={() => dispatch(toggleRegister)}>No account yet? Register here!</a></span>
             </div>
         </form>
@@ -65,7 +65,7 @@ export default function () {
 
 const loginValidation = (val) => {
     let err = [];
-    if (!val.username || !val.password) {
+    if (!val.email || !val.password) {
         err.push({
             msg: "Please fill in all fields!"
         })

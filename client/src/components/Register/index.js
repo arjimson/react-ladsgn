@@ -3,12 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { toggleRegister, registerUserAction } from '../../actions/authActions'
 
 function Register() {
-    const { isRegisterShow, isLoginLoading, isAuthenticated } = useSelector(state => state.auth)
-    const error = useSelector(state => state.error)
+    const { isRegisterShow } = useSelector(state => state.auth)
+    const errorMsg = useSelector(state => state.error)
     const dispatch = useDispatch()
-
-    // console.log(error, "error");
-
+    const [errors, setErrors] = useState([])
     const [register, setRegister] = useState({
         lastName: "",
         firstName: "",
@@ -21,10 +19,10 @@ function Register() {
     const { lastName, firstName, email, password, password2 } = register
 
     useEffect(() => {
-        if (error.id === 'REGISTER_FAIL') {
+        if (errorMsg.id === 'REGISTER_FAIL') {
             setRegister({
                 ...register,
-                msg: error.msg
+                msg: errorMsg.msg
             })
         } else {
             setRegister({
@@ -32,7 +30,6 @@ function Register() {
                 msg: null
             })
         }
-
         if (!isRegisterShow) {
             setRegister({
                 lastName: "",
@@ -43,14 +40,14 @@ function Register() {
                 msg: null
             })
         }
-    }, [error, isRegisterShow])
-
-
-
-
+    }, [errorMsg, isRegisterShow])
 
     const handleRegisterSubmit = (e) => {
         e.preventDefault()
+        const isValid = registerValidation({ lastName, firstName, email, password, password2 })
+        if (isValid.length > 0) {
+            return setErrors(isValid)
+        }
         const newUser = {
             lastName,
             firstName,
@@ -67,18 +64,16 @@ function Register() {
         })
     }
 
-    const handleRegisterButton = () => {
-
-    }
 
     return (
         <form onSubmit={(e) => handleRegisterSubmit(e)}>
             <div style={myStyle.registerModal} className={isRegisterShow ? "" : "modal-hidden"} >
                 <div style={{ marginBottom: "10px" }}>
-                    <i class="fas fa-times-circle" style={{ position: "absolute", right: "10px", color: "#fff", cursor: "pointer" }}
+                    <i className="fas fa-times-circle" style={{ position: "absolute", right: "10px", color: "#fff", cursor: "pointer" }}
                         onClick={() => dispatch(toggleRegister)}></i>
                 </div>
                 <label style={{ color: "#fff", fontSize: "1.5rem", marginBottom: "20px" }}>Create a New Account</label>
+                {errors.length > 0 && errors.map((err, index) => <p key={index} style={{ color: "#fff", fontSize: ".8rem", margin: "5px 0px" }}>{err.msg}</p>)}
                 {register.msg && <p style={{ color: "#fff", fontSize: ".8rem", margin: "5px 0px" }}>{register.msg}</p>}
                 <input type="text" style={myStyle.loginTextbox} placeholder="firstName" name="firstName" value={firstName} onChange={(e) => handleInputOnchange(e)} />
                 <input type="text" style={myStyle.loginTextbox} placeholder="lastName" name="lastName" value={lastName} onChange={(e) => handleInputOnchange(e)} />
@@ -91,7 +86,7 @@ function Register() {
     )
 }
 
-const loginValidation = (val) => {
+const registerValidation = (val) => {
     const { lastName, firstName, email, password, password2 } = val
     let err = [];
 
