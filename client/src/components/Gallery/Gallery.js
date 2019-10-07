@@ -1,9 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useFetch } from './../../useFetch';
 
 import './Gallery.scss';
 
-const gallery = props => {
-    const { photos, columns, handleOpenModal } = props;
+const Gallery = () => {
+
+    const [photos, setPhotos] = useState([
+        {
+            img: require('../../assets/img/img-1.png')
+        },
+        {
+            img: require('../../assets/img/img-2.png')
+        },
+        {
+            img: require('../../assets/img/img-3.png')
+        },
+        {
+            img: require('../../assets/img/img-4.png')
+        },
+        {
+            img: require('../../assets/img/img-5.png')
+        },
+        {
+            img: require('../../assets/img/img-6.png')
+        },
+        {
+            img: require('../../assets/img/img-7.png')
+        },
+        {
+            img: require('../../assets/img/img-8.png')
+        }
+    ]);
+
+    useFetch('http://localhost:5000/api/posts')
+
+    const [columns, setColumns] = useState('4');
 
     const columnWrapper = {};
     const result = [];
@@ -15,7 +47,7 @@ const gallery = props => {
     for (let i = 0; i < photos.length; i++) {
         const columnIndex = i % columns;
         columnWrapper[`column${columnIndex}`].push(
-            <a href="#" onClick={handleOpenModal} key={i}>
+            <a href="#" key={i}>
                 <img src={photos[i].img} />
             </a>
         )
@@ -27,14 +59,14 @@ const gallery = props => {
                 {columnWrapper[`column${i}`]}
             </div>
         )
-    }
+    }    
 
     return (
         <div className="gallery">
             {result}
         </div>
     )
+
 }
 
-
-export default gallery;
+export default Gallery;
