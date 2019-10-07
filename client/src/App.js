@@ -1,23 +1,27 @@
-import React, { Component, Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import './App.scss';
 
-import { Store } from './context/GlobalState'
+// import { Store } from './context/GlobalState'
+import { Provider } from 'react-redux'
+import { store } from './store'
+import { loadUser } from './actions/authActions'
+import Posts from './components/posts'
 
 const DefaultLayout = React.lazy(() => import('./container/DefaultLayout/DefaultLayout'));
-
 const loading = () => <div>Loading...</div>;
 
-class App extends Component {
+const App = () => {
+  useEffect(() =>{
+    store.dispatch(loadUser());
+  })
+  return (
+    <Provider store={store} >
+      <Suspense fallback={loading()}>
+        <DefaultLayout />
 
-  render() {
-    return (
-      <Store>
-        <Suspense fallback={loading()}>
-          <DefaultLayout />
-        </Suspense>
-      </Store>
-    )
-  }
+      </Suspense>
+    </Provider>
+  )
 }
 
 export default App;

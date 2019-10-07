@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-
-
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 const Gallery = React.lazy(() => import('./../../components/Gallery/Gallery'));
 const Modal = React.lazy(() => import('../../components/Modal/Modal'));
