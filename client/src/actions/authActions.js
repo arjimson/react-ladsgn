@@ -54,7 +54,6 @@ export const loginUserAction = ({ email, password }) => dispatch => {
     dispatch({
         type: LOGIN_LOADING
     })
-    console.log(email, password)
 
     // headers 
     const config = {
@@ -76,7 +75,7 @@ export const loginUserAction = ({ email, password }) => dispatch => {
             })
         })
         .catch(err => {
-            dispatch(returnErrors(err.response.data.msg, err.response.status, 'REGISTER_FAIL'))
+            dispatch(returnErrors(err.response.data.msg, err.response.status, 'LOGIN_FAIL'))
             dispatch(({
                 type: LOGIN_FAIL
             }))
