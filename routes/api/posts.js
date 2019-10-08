@@ -8,7 +8,7 @@ const posts = new Datastore({ filename: 'nedb/posts.db', autoload: true });
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/uploads')
+        cb(null, 'client/src/assets/uploads/')
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname)
@@ -18,14 +18,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 router.get('/', (req, res) => {
-    posts.find({}, (err, docs) => {
-        res.send(docs)
+    posts.find({}).sort({ created: 1 }).exec((err, docs) => {
+        res.json(docs)
     })
 })
 
 router.post('/', upload.single('selectedFile'), (req, res, next) => {
     let post = {
-        image_path: req.file.path
+        image_path: req.file.filename,
+        created: Date.now()
     }
 
     posts.insert(post, (err, doc) => {
