@@ -23,6 +23,14 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/:id', (req, res) => {
+    let id = req.params.id;
+
+    posts.find({ _id: id }, (err, docs) => {
+        res.json(docs)
+    })
+})
+
 router.post('/', upload.single('selectedFile'), (req, res, next) => {
     let post = {
         image_path: req.file.filename,
