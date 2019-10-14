@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
 
-const Datastore = require('nedb');
-const posts = new Datastore({ filename: 'nedb/posts.db', autoload: true });
+const Posts = require('./../../models/Posts');
+
+// const Datastore = require('nedb');
+// const posts = new Datastore({ filename: 'nedb/posts.db', autoload: true });
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -18,27 +19,40 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 router.get('/', (req, res) => {
-    posts.find({}).sort({ created: 1 }).exec((err, docs) => {
-        res.json(docs)
+    Posts.find().sort({ created: 1 })
+    .then(doc => {
+        res.json(doc)
+    })
+    .catch(err => {
+        console.log(err)
     })
 })
 
 router.get('/:id', (req, res) => {
     let id = req.params.id;
 
-    posts.find({ _id: id }, (err, docs) => {
-        res.json(docs)
+    Posts.findById(id)
+    .then(doc => {
+        res.json(doc)
+    })
+    .catch(err => {
+        console.log(err)
     })
 })
 
 router.post('/', upload.single('selectedFile'), (req, res, next) => {
-    let post = {
+    let post = new Posts({
+        title: 'The Title',
         image_path: req.file.filename,
         created: Date.now()
-    }
+    })
 
-    posts.insert(post, (err, doc) => {
-        res.send(doc)
+    post.save()
+    .then(doc => {
+        res.send('Saved!')
+    })
+    .catch(err => {
+        console.log(err)
     })
 });
 

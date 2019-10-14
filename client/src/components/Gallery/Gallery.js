@@ -22,7 +22,7 @@ const Gallery = () => {
         toggleModal(!isModalOpen);
         axios.get('http://localhost:5000/api/posts/' + id)
         .then(res => {
-            setPost(res.data[0]);
+            setPost(res.data);
         })
         .catch(err => {
             console.log(err)
