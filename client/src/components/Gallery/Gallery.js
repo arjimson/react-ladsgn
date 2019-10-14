@@ -7,6 +7,7 @@ import './Gallery.scss';
 
 const Gallery = () => {
     const [posts, setPosts] = useState([]);
+    const [post, setPost] = useState(null);
     const [columns, setColumns] = useState('4');
     const [isModalOpen, toggleModal] = useState(false);
 
@@ -21,7 +22,7 @@ const Gallery = () => {
         toggleModal(!isModalOpen);
         axios.get('http://localhost:5000/api/posts/' + id)
         .then(res => {
-            console.log(res)
+            setPost(res.data[0]);
         })
         .catch(err => {
             console.log(err)
@@ -58,12 +59,7 @@ const Gallery = () => {
                 {result}
             </div>
 
-            <button onClick={() => toggleModal(!isModalOpen)}>Toggle Modal</button>
-            <Modal isOpen={isModalOpen} toggle={toggleModal}>
-                <h1>test</h1>
-                <p>Other text that describes what is happening</p>
-                <button onClick={() => toggleModal(false)}>toggle</button>
-            </Modal>
+            <Modal isOpen={isModalOpen} toggle={toggleModal} post={post} />
         </>
     )
 

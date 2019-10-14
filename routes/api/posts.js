@@ -40,6 +40,12 @@ router.post('/', upload.single('selectedFile'), (req, res, next) => {
     posts.insert(post, (err, doc) => {
         res.send(doc)
     })
+});
+
+router.get('/like/:id', (req, res) => {
+    const id = req.params.id;
+    posts.update({ _id: id }, { $set: { likes: { liked: true, user_id: 123 } } })
+    res.json(req.params.id)
 })
 
 module.exports = router;
