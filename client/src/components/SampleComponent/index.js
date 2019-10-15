@@ -10,7 +10,7 @@ const App = () => {
         .then(res => {
             setItems(res.data)
         })
-    }, [item])
+    }, [items])
 
     const onChangeHandler = (e) => {
         setItem(e.target.value)

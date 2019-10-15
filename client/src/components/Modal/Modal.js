@@ -28,25 +28,12 @@ const findIfLiked = (arr, id) => {
     return arr.some(e => e['user'] === id);
 }
 
-const Modal = ({ isOpen, toggle, post }) => {
+const Modal = ({ isOpen, toggle, post, likeHandler }) => {
+    console.log(post)
     const ref = useRef();
     const likes = post.likes.length;
-    const [like, setLike] = useState(null);
-
-    // if(post && post.likes.length > 0 && findIfLiked(post.likes, 'remolalata')) {
-    //     setLike(true)
-    // }
   
     useOnClickOutside(ref, () => toggle(false));
-
-    const likeHandler = (e) => {
-        axios.get('http://localhost:5000/api/posts/like/' + e)
-        .then(res => {
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
   
     return (
         <div className="modal" style={{ display: (isOpen ? 'block' : 'none') }}>
@@ -57,11 +44,7 @@ const Modal = ({ isOpen, toggle, post }) => {
                         <div className="media__img">
                             <img src={require('../../assets/uploads/' + post.image_path)} />
                             <div className="like">
-                                {like ? 
-                                    <button type="button">liked {likes}</button>
-                                    :
-                                    <button type="button" onClick={(e) => likeHandler(post._id)}>like{likes}</button>
-                                }
+                                <button type="button" onClick={(e) => likeHandler(post._id)}>like {likes}</button>
                             </div>
                         </div>
                         <div className="media__body">

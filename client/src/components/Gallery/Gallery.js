@@ -1,25 +1,9 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-
-import Modal from './../Modal/Modal';
+import React from 'react';
 
 import './Gallery.scss';
 
-const Gallery = ({ posts }) => {
+const Gallery = ({ posts, highlightArtworkHandler }) => {
     const columns = 4;
-    const [post, setPost] = useState(null);
-    const [isModalOpen, toggleModal] = useState(false);
-
-    const highlightArtworkHandler = (id) => {
-        toggleModal(!isModalOpen);
-        axios.get('http://localhost:5000/api/posts/' + id)
-        .then(res => {
-            setPost(res.data);
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
 
     const columnWrapper = {};
     const result = [];
@@ -50,8 +34,6 @@ const Gallery = ({ posts }) => {
             <div className="gallery">
                 {result}
             </div>
-
-            {post && <Modal isOpen={isModalOpen} toggle={toggleModal} post={post} />}
         </>
     )
 
