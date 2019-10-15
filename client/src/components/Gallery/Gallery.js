@@ -6,9 +6,9 @@ import Modal from './../Modal/Modal';
 import './Gallery.scss';
 
 const Gallery = () => {
+    const columns = 4;
     const [posts, setPosts] = useState([]);
     const [post, setPost] = useState(null);
-    const [columns, setColumns] = useState('4');
     const [isModalOpen, toggleModal] = useState(false);
 
     useEffect(() => {
@@ -59,7 +59,7 @@ const Gallery = () => {
                 {result}
             </div>
 
-            <Modal isOpen={isModalOpen} toggle={toggleModal} post={post} />
+            {post && <Modal isOpen={isModalOpen} toggle={toggleModal} post={post} />}
         </>
     )
 

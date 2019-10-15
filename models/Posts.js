@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');
 const Scehma = mongoose.Schema;
 
+const LikeSchema = new Scehma({
+    liked: {
+        type: Boolean,
+        required: true
+    },
+    user: {
+        type: String,
+        required: true
+    }
+})
+
 const PostsSchema = new Scehma({
     title: {
         type: String
@@ -9,9 +20,7 @@ const PostsSchema = new Scehma({
         type: String,
         required: true
     },
-    likes: {
-        type: Array
-    },
+    likes: [LikeSchema],
     created: {
         type: String,
         required: true

@@ -24,17 +24,24 @@ const useOnClickOutside = (ref, handler) => {
     }, []);
 }
 
+const findIfLiked = (arr, id) => {
+    return arr.some(e => e['user'] === id);
+}
+
 const Modal = ({ isOpen, toggle, post }) => {
     const ref = useRef();
+    const likes = post.likes.length;
+    const [like, setLike] = useState(null);
+
+    // if(post && post.likes.length > 0 && findIfLiked(post.likes, 'remolalata')) {
+    //     setLike(true)
+    // }
   
     useOnClickOutside(ref, () => toggle(false));
-
-    const [like, setLike] = useState(null);
 
     const likeHandler = (e) => {
         axios.get('http://localhost:5000/api/posts/like/' + e)
         .then(res => {
-            console.log(res)
         })
         .catch(err => {
             console.log(err)
@@ -50,11 +57,15 @@ const Modal = ({ isOpen, toggle, post }) => {
                         <div className="media__img">
                             <img src={require('../../assets/uploads/' + post.image_path)} />
                             <div className="like">
-                                <button type="button" onClick={(e) => likeHandler(post._id)}>like</button>
+                                {like ? 
+                                    <button type="button">liked {likes}</button>
+                                    :
+                                    <button type="button" onClick={(e) => likeHandler(post._id)}>like{likes}</button>
+                                }
                             </div>
                         </div>
                         <div className="media__body">
-                            <h1>Key Visual</h1>
+                            <h1>{post.title}</h1>
                             <h2>Happy Skin x Disney</h2>
                             <p>by Dondee Lois Villaneuva, 2017</p>
                             <p>

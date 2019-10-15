@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 
 const Posts = require('./../../models/Posts');
+const Sample = require('./../../models/Sample');
 
 // const Datastore = require('nedb');
 // const posts = new Datastore({ filename: 'nedb/posts.db', autoload: true });
@@ -28,15 +29,10 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
-    let id = req.params.id;
-
-    Posts.findById(id)
+router.get('/sample', (req, res) => {
+    Sample.find({})
     .then(doc => {
         res.json(doc)
-    })
-    .catch(err => {
-        console.log(err)
     })
 })
 
@@ -56,10 +52,46 @@ router.post('/', upload.single('selectedFile'), (req, res, next) => {
     })
 });
 
+router.post('/sample', (req, res) => {
+    const item = new Sample({
+        title: req.body.item
+    })
+
+    item.save()
+    .then(() => {
+        console.log('Saved!')
+    })
+    .catch(err => {
+        console.log(err)
+    })
+})
+
+router.get('/:id', (req, res) => {
+    let id = req.params.id;
+
+    Posts.findById(id)
+    .then(doc => {
+        res.json(doc)
+    })
+    .catch(err => {
+        console.log(err)
+    })
+})
+
 router.get('/like/:id', (req, res) => {
     const id = req.params.id;
-    posts.update({ _id: id }, { $set: { likes: { liked: true, user_id: 123 } } })
-    res.json(req.params.id)
-})
+
+    Posts.findOne({ _id: id })
+    .then(post => {
+        post.likes.push({ liked: true, user: 'remolalata' });
+        post.save()
+        .then(() => {
+            console.log('Liked!')
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    })
+});
 
 module.exports = router;
