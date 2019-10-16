@@ -32,7 +32,7 @@ class DefaultLayout extends Component {
     render() {
         return (
             <React.Fragment>
-                <DefaultHeader/>
+         
                 
                 <div className="content">
                     <section className="home">

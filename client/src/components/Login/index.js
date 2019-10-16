@@ -51,10 +51,9 @@ export default function () {
                 <label style={{ color: "#fff", fontSize: "1.5rem", marginBottom: "20px" }}>LOG IN</label>
                 {errors.length > 0 && errors.map((err,index) => <p key={index} style={{ color: "#fff", fontSize: ".8rem", margin: "5px 0px" }}>{err.msg}</p>)}
                 <input type="text" style={myStyle.loginTextbox} value={login.email} placeholder="username" name="email" onChange={(e) => handleInputOnchange(e)} />
-                <input type="text" style={myStyle.loginTextbox} value={login.password} placeholder="password" name="password" onChange={(e) => handleInputOnchange(e)} />
-
-                <span><a href="#" style={myStyle.loginLinks}>Forget username?</a></span>{" "}
-                <span><a href="#" style={myStyle.loginLinks}>Forget password?</a></span>
+                <input type="password" style={myStyle.loginTextbox} value={login.password} placeholder="password" name="password" onChange={(e) => handleInputOnchange(e)} />
+                <p style={{margin: ".5rem 0", color: "#fff"}}><input type="checkbox" />{" "}Remember password</p>
+                <span><a href="#" style={myStyle.loginLinks}>Forget username/password?</a></span>{" "}
                 <button style={{ margin: "10px 0px", width: "100%", fontSize: "1.5rem" }}>LOG IN</button>
                 <span ><a href="#" style={{ color: "#fff", textAlign: "center", fontSize: ".8rem", cursor: "pointer" }}
                     onClick={() => dispatch(toggleRegister)}>No account yet? Register here!</a></span>

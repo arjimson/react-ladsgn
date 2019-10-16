@@ -16,7 +16,7 @@ User.loadDatabase()
 
 // using NEDB
 router.post('/signup', (req, res) => {
-    const { firstName, lastName, email, password } = req.body
+    const { firstName, lastName, email, password, userName } = req.body
 
     if(!firstName || !lastName || !email || !password) {
         return res.status(400).json({ msg: 'Please enter all fields!'})
@@ -26,10 +26,11 @@ router.post('/signup', (req, res) => {
         if(err) throw err
         if(users.length > 0) return res.status(400).json({ msg: 'User already exists'})
         const newUser = {
-            firstName,
-            lastName,
-            email,
-            password
+            userName
+            ,firstName
+            ,lastName
+            ,email
+            ,password
         }
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -47,6 +48,7 @@ router.post('/signup', (req, res) => {
                                 token,
                                 user: {
                                     id: user._id
+                                    ,userName: user.userName
                                     ,firstName: user.firstName
                                     ,lastName: user.lastName
                                     ,email: user.email
