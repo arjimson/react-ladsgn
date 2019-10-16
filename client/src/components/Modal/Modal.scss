@@ -1,0 +1,146 @@
+@import './../../scss/variables';
+
+.modal {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-color: rgba(247, 247, 247, 0.9);
+    font-family: gotham;
+
+    h1, h2 {
+        font-family: gothamBold;
+        margin: 5px 0;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+}
+
+.modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: $redColor
+}
+
+.media {
+    display: flex;
+    letter-spacing: 1px;
+    align-items: center;
+    justify-content: center;
+    height: min-content;
+
+    &__img, &__body {
+        width: 50%;
+        align-self: stretch;
+    }
+
+    &__img {
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        
+        img {
+            display: block;
+            max-width: 100%;
+        }
+    }
+
+    &__body {
+        padding: 30px;
+        position: relative;
+
+        p {
+            margin: 30px 0;
+            line-height: 1.4em;
+
+            span {
+                display: block;
+                margin: 5px auto
+            }
+        }
+
+        ul {
+            display: flex;
+            list-style: none;
+            font-family: gothamBold;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+
+            li {
+                margin-right: 20px;
+            }
+
+            a {
+                color: $redColor;
+
+                &:hover {
+                   border-bottom: 2px solid $redColor; 
+                }
+            }
+        }
+    }
+}
+
+.comment {
+    margin-top: 5em;
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        height: 200px;
+        max-height: 200px;
+    }
+
+    input {
+        width: 100%;
+        height: 25px;
+        background: #ededed;
+        border: none;
+        padding: 10px;
+        font-size: 0.8em;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+
+        &:hover, &:active, &:focus {
+            outline: none
+        }
+    }
+
+    &__list {
+        height: 200px;
+        max-height: 200px;
+        overflow: hidden;
+
+        ul {
+            overflow: hidden
+        }
+    }
+
+    p {
+        font-family: gotham;
+        margin: 10px 0;
+    }
+}
+
+.like {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
