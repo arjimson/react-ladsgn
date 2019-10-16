@@ -16,7 +16,7 @@ const DefaultLayout = () => {
         axios.get('http://localhost:5000/api/posts')
         .then(res => {
             setPosts(res.data)
-        })
+        });
     }, [])
 
     const onChangeHandler = e => {
@@ -66,7 +66,7 @@ const DefaultLayout = () => {
                 </section>
             </div>
 
-            {post && <Modal isOpen={isModalOpen} toggle={toggleModal} post={post} likeHandler={likeHandler} />}
+            <Modal isOpen={isModalOpen} toggle={toggleModal} post={post} likeHandler={likeHandler} />}
         </>
     )
 }

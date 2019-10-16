@@ -29,12 +29,9 @@ const findIfLiked = (arr, id) => {
 }
 
 const Modal = ({ isOpen, toggle, post, likeHandler }) => {
-    console.log(post)
     const ref = useRef();
-    const likes = post.likes.length;
-  
     useOnClickOutside(ref, () => toggle(false));
-  
+
     return (
         <div className="modal" style={{ display: (isOpen ? 'block' : 'none') }}>
             <div className="modal-body">
@@ -44,7 +41,7 @@ const Modal = ({ isOpen, toggle, post, likeHandler }) => {
                         <div className="media__img">
                             <img src={require('../../assets/uploads/' + post.image_path)} />
                             <div className="like">
-                                <button type="button" onClick={(e) => likeHandler(post._id)}>like {likes}</button>
+                                <button type="button" onClick={(e) => likeHandler(post._id)}>like {post.likes.length}</button>
                             </div>
                         </div>
                         <div className="media__body">
