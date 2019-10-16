@@ -15,10 +15,16 @@ import {
 
 
 const initialState = {
-    token: localStorage.getItem('token'),
-    isAuthenticated: null,
+    token: localStorage.getItem('jwtToken'),
+    isAuthenticated: false,
     isLoading: false,
-    user: null,
+    user: {
+        id: ''
+        ,userName: ''
+        ,firstName: ''
+        ,lastName: ''
+        ,email: ''
+    },
     isLoginLoading: false,
     isLoginShow: false,
     isRegisterShow: false,
@@ -64,8 +70,7 @@ export default function(state = initialState, { type, payload }) {
                 isRegisterLoading: true
             }    
         case LOGIN_SUCCESS:
-        case REGISTER_SUCCESS:
-            localStorage.setItem('token', payload.token)
+        case REGISTER_SUCCESS: 
             return {
                 ...state,
                 ...payload,
@@ -78,11 +83,16 @@ export default function(state = initialState, { type, payload }) {
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
         case REGISTER_FAIL:
-            localStorage.removeItem('token')
             return {
                 ...state,
                 token: null,
-                user: null,
+                user: {
+                    id: ''
+                    ,userName: ''
+                    ,firstName: ''
+                    ,lastName: ''
+                    ,email: ''
+                },
                 isAuthenticated: false,
                 isLoading: false,
                 isLoginLoading: false

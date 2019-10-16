@@ -49,7 +49,7 @@ header {
         top: 0;
         left: 0;
         right: 0;
-        bottom: -150px;
+        bottom: -0px;
         z-index: -1;
         background-image: url("../assets/img/header_gradient.png");
         background-repeat: repeat-x;
@@ -135,4 +135,74 @@ header {
     background: url("../assets/img/L.png") no-repeat;
     background-size: cover;
     background-position: left top;
+}
+
+.pdash_con {
+    width: 100%;
+    margin-top: 150px;
+    font-family: gothamBold;
+   
+    .pdash_wrp {
+        margin-top: 10px;
+        max-width: 800px;
+        width: 100%;
+        margin: auto;
+
+        .pdash_act {
+            max-width: 800px;
+            width: 100%;
+
+            .act_con {
+                display: flex;
+
+                .act_wrapper {
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    // border: 1px solid black;
+                    box-sizing: border-box;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transition: 150ms ease;
+
+                    &:hover {
+                        background: #F01E28;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+
+        .pdash_prof {
+            display: flex;
+            // border: 1px solid black;
+            margin-top: 10px;
+            div {
+                flex: 1;
+                // border: 1px solid black;
+            }
+            .prof_pic {
+                // display: flex;
+                // align-items: center;
+                display: flex;
+                justify-content: flex-end;
+
+                img {
+                    border-radius: 50%;
+                    // border: 1px solid black;
+                }
+                
+            }
+        }
+    }
+}
+
+.mrgn-0 {
+    margin: 0 !important
+}
+
+.pt-1 {
+    padding-top: 10px;
 }

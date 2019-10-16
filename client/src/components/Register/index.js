@@ -2,21 +2,24 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleRegister, registerUserAction } from '../../actions/authActions'
 
+const registerInitialValue = {
+    userName: ""
+    , lastName: ""
+    , firstName: ""
+    , email: ""
+    , password: ""
+    , password2: ""
+    , msg: null
+}
+
 function Register() {
     const { isRegisterShow } = useSelector(state => state.auth)
     const errorMsg = useSelector(state => state.error)
     const dispatch = useDispatch()
     const [errors, setErrors] = useState([])
-    const [register, setRegister] = useState({
-        lastName: "",
-        firstName: "",
-        email: "",
-        password: "",
-        password2: "",
-        msg: null
-    })
+    const [register, setRegister] = useState(registerInitialValue)
 
-    const { lastName, firstName, email, password, password2 } = register
+    const { userName, lastName, firstName, email, password, password2 } = register
 
     useEffect(() => {
         if (errorMsg.id === 'REGISTER_FAIL') {
@@ -31,14 +34,7 @@ function Register() {
             })
         }
         if (!isRegisterShow) {
-            setRegister({
-                lastName: "",
-                firstName: "",
-                email: "",
-                password: "",
-                password2: "",
-                msg: null
-            })
+            setRegister(registerInitialValue)
         }
     }, [errorMsg, isRegisterShow])
 
@@ -49,10 +45,11 @@ function Register() {
             return setErrors(isValid)
         }
         const newUser = {
-            lastName,
-            firstName,
-            email,
-            password
+            userName: userName.toLowerCase()
+            , lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1)
+            , firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1)
+            , email
+            , password
         }
         dispatch(registerUserAction(newUser));
     }
@@ -77,6 +74,7 @@ function Register() {
                 {register.msg && <p style={{ color: "#fff", fontSize: ".8rem", margin: "5px 0px" }}>{register.msg}</p>}
                 <input type="text" style={myStyle.loginTextbox} placeholder="firstName" name="firstName" value={firstName} onChange={(e) => handleInputOnchange(e)} />
                 <input type="text" style={myStyle.loginTextbox} placeholder="lastName" name="lastName" value={lastName} onChange={(e) => handleInputOnchange(e)} />
+                <input type="text" style={myStyle.loginTextbox} placeholder="userName" name="userName" value={userName} onChange={(e) => handleInputOnchange(e)} />
                 <input type="text" style={myStyle.loginTextbox} placeholder="email" name="email" value={email} onChange={(e) => handleInputOnchange(e)} />
                 <input type="password" style={myStyle.loginTextbox} placeholder="password" name="password" value={password} onChange={(e) => handleInputOnchange(e)} />
                 <input type="password" style={myStyle.loginTextbox} placeholder="confirm password" name="password2" value={password2} onChange={(e) => handleInputOnchange(e)} />

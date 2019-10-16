@@ -40,6 +40,7 @@ router.post('/signin', (req, res) => {
                             token,
                             user: {
                                 id: user._id
+                                , userName: user.userName
                                 , firstName: user.firstName
                                 , lastName: user.lastName
                                 , email: user.email
@@ -65,6 +66,7 @@ router.get('/user', auth, (req, res) => {
         res.json({
             user: {
                 id: user._id
+                , userName: user.userName
                 , firstName: user.firstName
                 , lastName: user.lastName
                 , email: user.email
