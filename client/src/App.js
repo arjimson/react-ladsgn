@@ -3,12 +3,7 @@ import './App.scss';
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { loadUser } from './actions/authActions'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from 'react-router-dom'
+import {  Route } from 'react-router-dom'
 
 import Profile from './components/Profile'
 import Settings from './components/Profile/settings'
@@ -39,11 +34,9 @@ const App = () => {
   return (
     <Provider store={store} >
       <DefaultHeader />
-      {/* <Route path="/" component={DefaultLayout} /> */}
-      <Route>
+        <Route path="/" component={DefaultLayout} />
         <Route exact path="/user/:profile_name" component={Profile} />
         <Route path="/settings" component={requireAuth(Settings)} />
-      </Route>
     </Provider>
   )
 }

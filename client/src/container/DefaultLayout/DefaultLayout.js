@@ -3,8 +3,8 @@ import axios from 'axios';
 
 import Modal from './../../components/Modal/Modal';
 
-const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
-const Gallery = React.lazy(() => import('./../../components/Gallery/Gallery'));
+import DefaultHeader from './DefaultHeader';
+import Gallery from './../../components/Gallery/Gallery';
 
 const DefaultLayout = () => {
     const [selectedFile, setSelectFile] = useState(null);
@@ -44,8 +44,35 @@ const DefaultLayout = () => {
         })
     }
 
-    const likeHandler = (e) => {
-        axios.get('http://localhost:5000/api/posts/like/' + e)
+    const likeHandler = (id, user) => {
+        axios.post('http://localhost:5000/api/posts/like', {
+            params: {
+                id: id,
+                user: user
+            }
+        })
+        .then(res => {
+            setPost(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    const unLikeHandler = (id, user) => {
+        axios.post('http://localhost:5000/api/posts/unlike', {
+            params: {
+                id: id,
+                user: user
+            }
+        })
+        .then(res => {
+            // setPost(res.data)
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     return (
@@ -66,7 +93,7 @@ const DefaultLayout = () => {
                 </section>
             </div>
 
-            <Modal isOpen={isModalOpen} toggle={toggleModal} post={post} likeHandler={likeHandler} />}
+            <Modal isOpen={isModalOpen} toggle={toggleModal} post={post} likeHandler={likeHandler} unLikeHandler={unLikeHandler} />}
         </>
     )
 }

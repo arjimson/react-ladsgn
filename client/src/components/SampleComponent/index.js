@@ -10,7 +10,7 @@ const App = () => {
         .then(res => {
             setItems(res.data)
         })
-    }, [items])
+    }, [])
 
     const onChangeHandler = (e) => {
         setItem(e.target.value)
@@ -18,28 +18,39 @@ const App = () => {
 
     const onSubmitHandler = () => {
         const data = {
-            item: item
+            title: item
         }
 
         axios.post('http://localhost:5000/api/posts/sample', data)
         .then(res => {
             console.log(res)
+            
         })
         .catch(err => {
             console.log(err)
         })
+
+        setItems([...items, data])
     }
 
     return (
         <>
             <input type="text" onChange={onChangeHandler}/>
             <button type="button" onClick={onSubmitHandler}>Submit</button>
-            <ul>
-                {items.map(theItem => 
-                    <li>{theItem.title}</li>
-                )}
-            </ul>
+            <ChildComponent data={items} key={items} />
         </>
+    )
+}
+
+const ChildComponent = ({ data }) => {
+    console.log(data)
+    const [ha, setHa] = useState(data);
+    return (
+        <ul>
+            {data && data.map((h, i) =>
+                <li key={i} >{h.title}</li>
+            )}
+        </ul>
     )
 }
 
