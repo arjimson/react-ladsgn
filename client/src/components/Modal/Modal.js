@@ -28,12 +28,12 @@ const findIfLiked = (arr, id) => {
     return arr.some(e => e['user'] === id);
 }
 
-const Modal = ({ isOpen, toggle, post, likeHandler }) => {
+const Modal = ({ isOpen, toggle, post, likeHandler, unLikeHandler, comment, onChangeCommentHandler, onClickCommentHandler }) => {
     const ref = useRef();
     useOnClickOutside(ref, () => toggle(false));
 
     return (
-        <div className="modal" style={{ display: (isOpen ? 'block' : 'none') }}>
+        <div className="modal" style={{ display: (isOpen ? 'block' : 'none') }}> 
             <div className="modal-body">
 
                 {post && (
@@ -41,7 +41,19 @@ const Modal = ({ isOpen, toggle, post, likeHandler }) => {
                         <div className="media__img">
                             <img src={require('../../assets/uploads/' + post.image_path)} />
                             <div className="like">
-                                <button type="button" onClick={(e) => likeHandler(post._id)}>like {post.likes.length}</button>
+                                
+
+                                {post && findIfLiked(post.likes, 'remolalata') ?
+                                    <div>
+                                        <span key={post.likes.length}>{post.likes.length}</span>
+                                        <button type="button" onClick={(id, user) => unLikeHandler(post._id, 'remolalata')}>unlike</button>
+                                    </div>
+                                    :
+                                    <div>
+                                        <span key={post.likes.length}>{post.likes.length}</span>
+                                        <button type="button" onClick={(id, user) => likeHandler(post._id, 'remolalata')}>like</button>
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div className="media__body">
@@ -59,33 +71,29 @@ const Modal = ({ isOpen, toggle, post, likeHandler }) => {
                                 <li><a href="#">#composition</a></li>
                             </ul>
 
+                            <hr/>
+
                             <div className="comment">
                                 <div className="comment__list">
                                     <ul>
-                                        <li>
-                                            <span>User 1</span>
-                                            <p>Lorem ipsum dolor sit amet consectetur!</p>
-                                        </li>
-                                        <li>
-                                            <span>User 2</span>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                        </li>
-                                        <li>
-                                            <span>User 4</span>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                        </li>
-                                        <li>
-                                            <span>User 3</span>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                        </li>
-                                        <li>
-                                            <span>User 5</span>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                        </li>
+                                        {post ? post.comments.map(comment => 
+                                            <li key={comment._id}>
+                                                <span>{comment.user}</span>
+                                                <p>{comment.comment}</p>
+                                            </li>
+                                        ) :
+                                            ''
+                                        }
                                     </ul>
                                 </div>
 
-                                <input type="text"/>
+                                <input
+                                    type="text"
+                                    onChange={onChangeCommentHandler}
+                                    onKeyDown={(e) => onClickCommentHandler(e, post._id, 'remolalata')}
+                                    value={comment}
+                                    placeholder="Write a comment..."
+                                />
                             </div>
 
                         </div>

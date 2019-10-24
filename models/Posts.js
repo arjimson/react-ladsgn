@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Scehma = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-const LikeSchema = new Scehma({
+const LikeSchema = new Schema({
     liked: {
         type: Boolean,
         required: true
@@ -12,7 +12,18 @@ const LikeSchema = new Scehma({
     }
 })
 
-const PostsSchema = new Scehma({
+const CommentSchema = new Schema({
+    comment: {
+        type: String,
+        required: true
+    },
+    user: {
+        type: String,
+        required: true
+    }
+})
+
+const PostsSchema = new Schema({
     title: {
         type: String
     },
@@ -21,6 +32,7 @@ const PostsSchema = new Scehma({
         required: true
     },
     likes: [LikeSchema],
+    comments: [CommentSchema],
     created: {
         type: String,
         required: true
