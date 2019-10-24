@@ -20,7 +20,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 router.get('/', (req, res) => {
-    Posts.find().sort({ created: 1 })
+    let { count, start } = req.query;
+    Posts.find()
+    .sort({ created: 1 })
+    .skip(parseInt(start))
+    .limit(parseInt(count))
     .then(doc => {
         res.json(doc)
     })
@@ -52,6 +56,50 @@ router.post('/', upload.single('selectedFile'), (req, res, next) => {
     })
 });
 
+router.post('/like', (req, res) => {
+    const id = req.body.params.id, user = req.body.params.user;
+
+    Posts.findOne({ _id: id })
+    .then(post => {
+        post.likes.push({ liked: true, user: user });
+        post.save()
+        .then(() => {
+            res.send(post)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    })
+});
+
+router.post('/unlike', (req, res) => {
+    const { id, user } = req.body.params;
+
+    Posts.findOne({ _id: id })
+    .then(post => {
+        const likeId = post.likes.filter(x => x.user === user).map(x => x._id);
+
+        post.likes.id(likeId).remove()
+        post.save()
+        .then(() => {
+            res.send(post)
+        })
+    })
+})
+
+router.post('/comment', (req, res) => {
+    const { id, comment, user } = req.body;
+
+    Posts.findOne({ _id: id })
+    .then(post => {
+        post.comments.push({ comment: comment, user: user })
+        post.save()
+        .then(() => {
+            res.send(post)
+        })
+    })
+})
+
 router.post('/sample', (req, res) => {
     const item = new Sample({
         title: req.body.item
@@ -77,21 +125,5 @@ router.get('/:id', (req, res) => {
         console.log(err)
     })
 })
-
-router.get('/like/:id', (req, res) => {
-    const id = req.params.id;
-
-    Posts.findOne({ _id: id })
-    .then(post => {
-        post.likes.push({ liked: true, user: 'remolalata' });
-        post.save()
-        .then(() => {
-            console.log('Liked!')
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    })
-});
 
 module.exports = router;

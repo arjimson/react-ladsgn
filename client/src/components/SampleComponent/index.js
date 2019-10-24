@@ -30,12 +30,13 @@ const App = () => {
             console.log(err)
         })
 
+        setItem('')
         setItems([...items, data])
     }
 
     return (
         <>
-            <input type="text" onChange={onChangeHandler}/>
+            <input type="text" onChange={onChangeHandler} value={item} />
             <button type="button" onClick={onSubmitHandler}>Submit</button>
             <ChildComponent data={items} key={items} />
         </>
@@ -43,8 +44,6 @@ const App = () => {
 }
 
 const ChildComponent = ({ data }) => {
-    console.log(data)
-    const [ha, setHa] = useState(data);
     return (
         <ul>
             {data && data.map((h, i) =>

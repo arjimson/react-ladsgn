@@ -1,8 +1,9 @@
 import React from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import './Gallery.scss';
 
-const Gallery = ({ posts, highlightArtworkHandler }) => {
+const Gallery = ({ posts, highlightArtworkHandler, fetchImagesHandler }) => {
     const columns = 4;
 
     const columnWrapper = {};
@@ -32,7 +33,15 @@ const Gallery = ({ posts, highlightArtworkHandler }) => {
     return (
         <>
             <div className="gallery">
-                {result}
+                <InfiniteScroll
+                    dataLength={posts.length}
+                    next={fetchImagesHandler}
+                    hasMore={true}
+                    loader={<div>Loading...</div>}
+                    endMessage={<div>You have seen it all</div>}
+                >
+                    {result}
+                </InfiniteScroll>
             </div>
         </>
     )
