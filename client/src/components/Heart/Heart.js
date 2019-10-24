@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import './Heart.scss';
 
 const Heart = () => {
+    const [active, setActive] = useState(false);
+
     return (
         <>
-            <input type="checkbox" id="toggle-heart" />
-            <label for="toggle-heart">❤</label>
+            <div className={'heart ' + (active ? 'active' : '')} onClick={ () => setActive(!active) } ></div>
         </>
     )
 }
