@@ -5,14 +5,7 @@ const config = require('config')
 const jwt = require('jsonwebtoken')
 const auth = require('../../middleware/auth')
 
-// const User = require('../../models/Users')
-
-const Datastore = require('nedb')
-const User = new Datastore('./nedb/users.db')
-// const userSession = new Datastore('./nedb/user_session.db')
-
-// userSession.loadDatabase()
-User.loadDatabase()
+const User = require('../../models/Users')
 
 router.post('/signin', (req, res) => {
     const { email, password } = req.body
@@ -21,38 +14,36 @@ router.post('/signin', (req, res) => {
         return res.status(400).json({ msg: 'Please enter all fields!' })
     }
 
-    User.find({ email }, (err, docs) => {
-        if (err) throw err
-        // validate if exist
-        if (docs.length === 0) return res.status(400).json({ msg: 'User does not exist' })
-        // validate password
-        const user = docs[0];
-        bcrypt.compare(password, user.password)
-            .then(isMatch => {
-                if (!isMatch) return res.status(400).json({ msg: 'Invalid username or password' })
-                jwt.sign(
-                    { id: user._id }
-                    , config.get('jwtSecret')
-                    , { expiresIn: 3600 }
-                    , (err, token) => {
-                        if (err) throw err
-                        res.json({
-                            token,
-                            user: {
-                                id: user._id
-                                , userName: user.userName
-                                , firstName: user.firstName
-                                , lastName: user.lastName
-                                , email: user.email
-                            }
-
+    User.find({ email })
+        .then(users => {
+            if(users.length === 0) return res.status(400).json({ msg: 'User does not exist' })
+            const user = users[0]
+            bcrypt.compare(password, user.password)
+                .then(isMatch => {
+                    if(!isMatch) return res.status(400).json({ msg: 'Invalid username or password' })
+                    jwt.sign(
+                        { id: user._id }
+                        , config.get('jwtSecret')
+                        , { expiresIn: 3600 }
+                        , (err, token) => {
+                            if (err) throw err
+                            res.json({
+                                token,
+                                user: {
+                                    id: user._id
+                                    , userName: user.userName
+                                    , firstName: user.firstName
+                                    , lastName: user.lastName
+                                    , email: user.email
+                                }
+    
+                            })
                         })
-                    }
-                )
-            })
-    })
-
-
+                }) 
+        })
+        .catch(err => {
+            if(err) throw err
+        })
 
 })
 

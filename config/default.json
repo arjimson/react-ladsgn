@@ -1,4 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://admin:admin@cluster0-mbw1s.mongodb.net/ladsgn?retryWrites=true&w=majority",
+  "mongoURI" : "mongodb+srv://Arjimson:M09369358677ongoatlas@ladssign-7fxn8.mongodb.net/ladbrokes_blogsite",
   "jwtSecret": "lb_myJwtSecret"
 }

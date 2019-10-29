@@ -5,104 +5,60 @@ const config = require('config')
 const jwt = require('jsonwebtoken')
 const auth = require('../../middleware/auth')
 
-// const User = require('../../models/Users')
+const Users = require('../../models/Users')
 
-const Datastore = require('nedb')
-const User = new Datastore('./nedb/users.db')
-User.loadDatabase()
-// const userSession = new Datastore('./nedb/user_session.db')
+router.post('/signup', (req,res) => {
+    const { firstName, lastName, email, password, userName} = req.body;
 
-// userSession.loadDatabase()
-
-// using NEDB
-router.post('/signup', (req, res) => {
-    const { firstName, lastName, email, password, userName } = req.body
+    const newUser = new Users({
+        firstName
+        ,lastName
+        ,email
+        ,password
+        ,userName
+    })
+    // res.send(newUser)
 
     if(!firstName || !lastName || !email || !password) {
         return res.status(400).json({ msg: 'Please enter all fields!'})
     }
 
-    User.find({ email }, (err, users) => {
-        if(err) throw err
-        if(users.length > 0) return res.status(400).json({ msg: 'User already exists'})
-        const newUser = {
-            userName
-            ,firstName
-            ,lastName
-            ,email
-            ,password
-        }
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if(err) throw err
-                newUser.password = hash
-                User.insert(newUser, (err, user) => {
+    Users.find({ email })
+        .then(user => {
+            // res.send(user)
+            if(user.length > 0) {
+               return res.status(400).json({ msg : 'User exists!'})
+            }
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
                     if(err) throw err
-                    jwt.sign(
-                        { id : user._id }
-                        ,config.get('jwtSecret')
-                        ,{ expiresIn : 3600 }
-                        ,(err, token) => {
-                            if(err) throw err
-                            res.json({
-                                token,
-                                user: {
-                                    id: user._id
-                                    ,userName: user.userName
-                                    ,firstName: user.firstName
-                                    ,lastName: user.lastName
-                                    ,email: user.email
-                                },
-                                msg: "Your account successfully added. Login now!"
+                    newUser.password = hash
+                    newUser.save(newUser)
+                        .then(user => {
+                            jwt.sign(
+                                { id : user._id }
+                                ,config.get('jwtSecret')
+                                ,{ expiresIn : 3600 }
+                                ,(err, token) => {
+                                    if(err) throw err
+                                    res.json({
+                                        token
+                                        ,user: {
+                                            id: user._id
+                                            ,userName: user.userName
+                                            ,firstName: user.firstName
+                                            ,lastName: user.lastName
+                                            ,email: user.email 
+                                        }
+                                    })
                             })
-                        }
-                    )
+                        })
+                        .catch(err => {
+                            if(err) throw err
+                        })
                 })
             })
         })
-    })
-
-    // MongoDB 
-    // User.find({ email })
-    //     .then(user => {
-    //         if(user) return res.status(400).json({ msg: 'User already exists'})
-    //         const newUser = new User({
-    //             firstName,
-    //             lastName,
-    //             email,
-    //             password
-    //         })
-    //         // password encryption
-    //         bcrypt.genSalt(10, (err, salt) => {
-    //             bcrypt.hash(newUser.password, salt, (err, hash) => {
-    //                 if(err) throw err
-    //                 newUser.password = hash
-    //                 User.insert(newUser)
-    //                 // newUser.save()
-    //                     .then(user => {
-    //                         // get jwt token
-    //                         jwt.sign(
-    //                             { id : user.id }
-    //                             ,config.get('jwtSeceret'),
-    //                             { expiresIn: 3600}
-    //                             ,(err, token) => {
-    //                                 if(err) throw err
-    //                                 res.json({
-    //                                     token,
-    //                                     user: {
-    //                                         id: user.id
-    //                                         ,firstName: user.firstName
-    //                                         ,lastName: user.lastName
-    //                                         ,email: user.email
-    //                                     }
-    //                                 })
-    //                             }
-    //                         )
-    //                     })
-    //             })
-    //         })
-    //     })
 })
-
 
 module.exports = router;
