@@ -16,17 +16,17 @@ const DefaultLayout = () => {
 
     useEffect(() => {
         axios.get(`/api/posts?count=${count}&start=${start}`)
-        .then(res => {
-            setPosts(res.data)
-        });
+            .then(res => {
+                setPosts(res.data)
+            });
     }, [])
 
     const fetchImagesHandler = () => {
         setStart(start + count);
         axios.get(`/api/posts?count=${count}&start=${start}`)
-        .then(res => {
-            setPosts(posts.concat(res.data));
-        });
+            .then(res => {
+                setPosts(posts.concat(res.data));
+            });
     }
 
     const onChangeHandler = e => {
@@ -42,9 +42,9 @@ const DefaultLayout = () => {
         data.append('selectedFile', selectedFile);
 
         axios.post('http://localhost:5000/api/posts/', data)
-        .then(response => {
-            console.log(response)
-        })
+            .then(response => {
+                console.log(response)
+            })
     }
 
     const onClickCommentHandler = (e, id, user) => {
@@ -56,22 +56,22 @@ const DefaultLayout = () => {
 
         if (e.keyCode === 13) {
             axios.post('http://localhost:5000/api/posts/comment', data)
-            .then(res => {
-                setComment('')
-                setPost(res.data)
-            })
+                .then(res => {
+                    setComment('')
+                    setPost(res.data)
+                })
         }
     }
 
     const highlightArtworkHandler = (id) => {
         toggleModal(!isModalOpen);
         axios.get('http://localhost:5000/api/posts/' + id)
-        .then(res => {
-            setPost(res.data);
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(res => {
+                setPost(res.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     const likeHandler = (id, user) => {
@@ -82,12 +82,12 @@ const DefaultLayout = () => {
                 user: user
             }
         })
-        .then(res => {
-            setPost(res.data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(res => {
+                setPost(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     const unLikeHandler = (id, user) => {
@@ -97,12 +97,12 @@ const DefaultLayout = () => {
                 user: user
             }
         })
-        .then(res => {
-            setPost(res.data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(res => {
+                setPost(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     let modal;
@@ -119,10 +119,18 @@ const DefaultLayout = () => {
         />
     }
 
+    console.log(posts)
+    let gallery;
+    if (posts.length > 0) {
+        gallery = <Gallery posts={posts} highlightArtworkHandler={highlightArtworkHandler} fetchImagesHandler={fetchImagesHandler} />
+    } else {
+        gallery = <p>No gallery yet</p>
+    }
+
     return (
         <>
-            <DefaultHeader/>
-            
+            <DefaultHeader />
+
             <div className="content">
                 <section className="home">
                     <div className="tagline"></div>
@@ -130,7 +138,8 @@ const DefaultLayout = () => {
                 </section>
 
                 <section className="gallery-wrapper">
-                    <Gallery posts={posts} highlightArtworkHandler={highlightArtworkHandler} fetchImagesHandler={fetchImagesHandler}/>
+
+                    {gallery}
 
                     <input type="file" onChange={onChangeHandler} />
                     <button type="button" onClick={() => onClickHandler()}>upload</button>
