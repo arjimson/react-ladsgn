@@ -5,8 +5,6 @@ import Modal from './../../components/Modal/Modal';
 import DefaultHeader from './DefaultHeader';
 import Gallery from './../../components/Gallery/Gallery';
 
-import Heart from './../../components/Heart/Heart';
-
 const DefaultLayout = () => {
     const [selectedFile, setSelectFile] = useState(null);
     const [post, setPost] = useState(null);
@@ -77,6 +75,7 @@ const DefaultLayout = () => {
     }
 
     const likeHandler = (id, user) => {
+        console.log(id, user)
         axios.post('http://localhost:5000/api/posts/like', {
             params: {
                 id: id,
@@ -106,6 +105,20 @@ const DefaultLayout = () => {
         })
     }
 
+    let modal;
+    if (post) {
+        modal = <Modal
+            isOpen={isModalOpen}
+            toggle={toggleModal}
+            post={post}
+            likeHandler={likeHandler}
+            unLikeHandler={unLikeHandler}
+            comment={comment}
+            onChangeCommentHandler={onChangeCommentHandler}
+            onClickCommentHandler={onClickCommentHandler}
+        />
+    }
+
     return (
         <>
             <DefaultHeader/>
@@ -116,26 +129,15 @@ const DefaultLayout = () => {
                     <div className="ladbrokes"></div>
                 </section>
 
-                <Heart/>
-
                 <section className="gallery-wrapper">
                     <Gallery posts={posts} highlightArtworkHandler={highlightArtworkHandler} fetchImagesHandler={fetchImagesHandler}/>
 
                     <input type="file" onChange={onChangeHandler} />
                     <button type="button" onClick={() => onClickHandler()}>upload</button>
                 </section>
-            </div>
 
-            <Modal
-                isOpen={isModalOpen}
-                toggle={toggleModal}
-                post={post}
-                likeHandler={likeHandler}
-                unLikeHandler={unLikeHandler}
-                comment={comment}
-                onChangeCommentHandler={onChangeCommentHandler}
-                onClickCommentHandler={onClickCommentHandler}
-            />
+                {modal}
+            </div>
         </>
     )
 }

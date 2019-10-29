@@ -22,7 +22,7 @@ const upload = multer({ storage: storage })
 router.get('/', (req, res) => {
     let { count, start } = req.query;
     Posts.find()
-    .sort({ created: 1 })
+    .sort({ created: -1 })
     .skip(parseInt(start))
     .limit(parseInt(count))
     .then(doc => {
