@@ -38,7 +38,6 @@ const Gallery = ({ posts, highlightArtworkHandler, fetchImagesHandler }) => {
                     next={fetchImagesHandler}
                     hasMore={true}
                     loader={<div>Loading...</div>}
-                    endMessage={<div>You have seen it all</div>}
                 >
                     {result}
                 </InfiniteScroll>

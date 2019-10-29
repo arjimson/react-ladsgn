@@ -38,9 +38,11 @@
     align-items: center;
     justify-content: center;
     height: min-content;
+    height: 90vh;
 
     &__img, &__body {
         width: 50%;
+        height: 100%;
         align-self: stretch;
     }
 
@@ -60,10 +62,11 @@
     &__body {
         padding: 30px;
         position: relative;
+        display: flex;
+        flex-direction: column;
 
         p {
             margin: 30px 0;
-            line-height: 1.4em;
 
             span {
                 display: block;
@@ -95,6 +98,8 @@
 }
 
 .comment {
+    margin-top: 10px;
+    
     ul {
         display: flex;
         flex-direction: column;
@@ -126,13 +131,13 @@
     }
 
     &__list {
-        height: 200px;
-        max-height: 200px;
+        min-height: 20px;
+        max-height: 100%;
     }
 }
 
 .like {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
+    bottom: -20px;
+    right: -20px;
 }
