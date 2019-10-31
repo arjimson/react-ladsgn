@@ -19,7 +19,7 @@ router.post('/signup', (req,res) => {
     })
     // res.send(newUser)
 
-    if(!firstName || !lastName || !email || !password) {
+    if(!firstName || !lastName || !email || !password || !userName) {
         return res.status(400).json({ msg: 'Please enter all fields!'})
     }
 
@@ -33,7 +33,7 @@ router.post('/signup', (req,res) => {
                 bcrypt.hash(newUser.password, salt, (err, hash) => {
                     if(err) throw err
                     newUser.password = hash
-                    newUser.save(newUser)
+                    newUser.save()
                         .then(user => {
                             jwt.sign(
                                 { id : user._id }

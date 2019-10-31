@@ -5,7 +5,6 @@ import './Gallery.scss';
 
 const Gallery = ({ posts, highlightArtworkHandler, fetchImagesHandler }) => {
     const columns = 4;
-
     const columnWrapper = {};
     const result = [];
     
@@ -33,14 +32,15 @@ const Gallery = ({ posts, highlightArtworkHandler, fetchImagesHandler }) => {
     return (
         <>
             <div className="gallery">
-                <InfiniteScroll
+            {result}
+                {/* <InfiniteScroll
                     dataLength={posts.length}
                     next={fetchImagesHandler}
                     hasMore={true}
-                    loader={<div>Loading...</div>}
+                    loader={''}
                 >
-                    {result}
-                </InfiniteScroll>
+                    
+                </InfiniteScroll> */}
             </div>
         </>
     )

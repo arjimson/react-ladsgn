@@ -26,14 +26,19 @@ const CommentSchema = new Schema({
 const PostsSchema = new Schema({
     title: {
         type: String
-    },
-    image_path: {
+        ,required: true
+    }
+    ,description: {
+        type: String
+        ,required: true
+    }
+    ,image_path: {
         type: String,
         required: true
-    },
-    likes: [LikeSchema],
-    comments: [CommentSchema],
-    created: {
+    }
+    ,likes: [LikeSchema]
+    ,comments: [CommentSchema]
+    ,created: {
         type: String,
         required: true
     }

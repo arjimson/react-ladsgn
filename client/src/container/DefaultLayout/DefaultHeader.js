@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './../../assets/img/logo.png'
 import { Link } from 'react-router-dom'
 
@@ -7,10 +7,11 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import LoginForm from '../../components/Login/'
 import RegisterForm from '../../components/Register/'
+import UploadForm from '../../components/Upload'
 
 
 const DefaultHeader = () => {
-
+    const [toggleUploadBtn, setToggleUploadBtn] = useState(false)
     const { isAuthenticated, user } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
@@ -18,6 +19,7 @@ const DefaultHeader = () => {
     const authLinks = (
         <>
             <strong><Link to={`/user/${user.userName}`}>{user.userName}</Link> </strong>
+            <button onClick={() => setToggleUploadBtn(!toggleUploadBtn)}>Upload</button>
             <button onClick={() => dispatch(logout)}>Log out</button>
         </>
     )
@@ -46,6 +48,11 @@ const DefaultHeader = () => {
                     {isAuthenticated ? authLinks : guestLinks}
                     <LoginForm />
                     <RegisterForm />
+                    <UploadForm
+                        toggleUploadBtn={toggleUploadBtn}
+                        setToggleUploadBtn={setToggleUploadBtn}
+                    />
+
                 </div>
             </div>
         </header>

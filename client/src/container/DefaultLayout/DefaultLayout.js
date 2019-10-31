@@ -1,50 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+// REDUX
+import { useSelector, useDispatch } from 'react-redux'
+import { getPostsAction } from '../../actions/postActions'
 
 import Modal from './../../components/Modal/Modal';
 import DefaultHeader from './DefaultHeader';
 import Gallery from './../../components/Gallery/Gallery';
 
+import Upload from '../../components/Upload';
+
 const DefaultLayout = () => {
-    const [selectedFile, setSelectFile] = useState(null);
+    const dispatch = useDispatch()
+
+    const { user: { id: userId } } = useSelector(state => state.auth)
+    const { posts, isPostLoading } = useSelector(state => state.posts)
+
     const [post, setPost] = useState(null);
-    const [posts, setPosts] = useState([]);
-    const [start, setStart] = useState(0);
-    const [count, setCount] = useState(8);
     const [comment, setComment] = useState(null);
     const [isModalOpen, toggleModal] = useState(false);
+    // const [posts, setPosts] = useState([]);
+    // const [start, setStart] = useState(0);
+    // const [count, setCount] = useState(8);
 
     useEffect(() => {
-        axios.get(`/api/posts?count=${count}&start=${start}`)
-            .then(res => {
-                setPosts(res.data)
-            });
+        dispatch(getPostsAction())
     }, [])
 
-    const fetchImagesHandler = () => {
-        setStart(start + count);
-        axios.get(`/api/posts?count=${count}&start=${start}`)
-            .then(res => {
-                setPosts(posts.concat(res.data));
-            });
-    }
+    console.log(userId, 'redux user')
+    console.log(posts, 'redux posts')
 
-    const onChangeHandler = e => {
-        setSelectFile(e.target.files[0])
-    }
+    // const fetchImagesHandler = () => {
+    //     setStart(start + count);
+    //     axios.get(`/api/posts?count=${count}&start=${start}`)
+    //         .then(res => {
+    //             setPosts(res.data);
+    //         });
+    // }
 
     const onChangeCommentHandler = e => {
         setComment(e.target.value)
-    }
-
-    const onClickHandler = e => {
-        const data = new FormData();
-        data.append('selectedFile', selectedFile);
-
-        axios.post('http://localhost:5000/api/posts/', data)
-            .then(response => {
-                console.log(response)
-            })
     }
 
     const onClickCommentHandler = (e, id, user) => {
@@ -74,16 +69,15 @@ const DefaultLayout = () => {
             })
     }
 
-    const likeHandler = (id, user) => {
-        console.log(id, user)
-        axios.post('http://localhost:5000/api/posts/like', {
-            params: {
-                id: id,
-                user: user
-            }
-        })
+    const likeHandler = (id) => {
+        console.log(id, userId);
+        const newLike = {
+            id: id,
+            user: userId
+        }
+        axios.post('http://localhost:5000/api/posts/like', newLike)
             .then(res => {
-                setPost(res.data)
+                console.log(res)
             })
             .catch(err => {
                 console.log(err)
@@ -119,10 +113,9 @@ const DefaultLayout = () => {
         />
     }
 
-    console.log(posts)
     let gallery;
     if (posts.length > 0) {
-        gallery = <Gallery posts={posts} highlightArtworkHandler={highlightArtworkHandler} fetchImagesHandler={fetchImagesHandler} />
+        gallery = <Gallery posts={posts} highlightArtworkHandler={highlightArtworkHandler} />
     } else {
         gallery = <p>No gallery yet</p>
     }
@@ -141,8 +134,7 @@ const DefaultLayout = () => {
 
                     {gallery}
 
-                    <input type="file" onChange={onChangeHandler} />
-                    <button type="button" onClick={() => onClickHandler()}>upload</button>
+
                 </section>
 
                 {modal}

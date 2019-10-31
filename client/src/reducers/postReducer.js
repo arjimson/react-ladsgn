@@ -1,10 +1,14 @@
-import { GET_POSTS, ADD_POST } from '../actions/types'
+import { 
+    GET_POSTS
+    ,ADD_POST
+    ,POST_LOADING
+    ,GET_POSTS_SUCCESS
+    ,GET_POSTS_FAIL
+} from '../actions/types'
 
 const initialState = {
-    posts: [
-        { id: 1, name: "arjimson", age: "25"}
-        ,{ id: 2, name: "arjimson", age: "25"}
-    ]
+    posts: [],
+    isPostLoading: false
 }
 
 export default function(state = initialState, { type, payload} ) {
@@ -17,6 +21,16 @@ export default function(state = initialState, { type, payload} ) {
             return {
                 ...state,
                 posts: [...state.posts, payload]
+            }
+        case POST_LOADING :
+            return {
+                ...state,
+                isPostLoading: true
+            }
+        case GET_POSTS_SUCCESS: 
+            return {
+                ...state,
+                posts: payload
             }
         default:
             return state

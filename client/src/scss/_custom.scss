@@ -202,7 +202,38 @@ header {
 .mrgn-0 {
     margin: 0 !important
 }
+.mt-1 {
+    margin-top: 10px;
+}
+.mt-2 {
+    margin-top: 20px;
+}
 
 .pt-1 {
     padding-top: 10px;
+}
+
+.mdl-upload {
+    background: linear-gradient(to bottom, #e66a70, #f01e28 100%);
+    border: 1px solid #e80505;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 999;
+    right: 0;
+    top: 0;
+    padding: 10px;
+}
+
+.lb-textbox {
+    box-sizing: border-box;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
