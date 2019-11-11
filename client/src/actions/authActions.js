@@ -1,6 +1,6 @@
 import axios from 'axios'
 import setAuthorizationToken from '../utils/setAuthorizationToken'
-import { returnErrors } from './errorActions'
+import { returnErrors, clearErrors } from './errorActions'
 import {
     USER_LOADED,
     USER_LOADING,
@@ -13,7 +13,8 @@ import {
     REGISTER_FAIL,
     TOGGLE_LOGIN_MODAL,
     TOGGLE_REGISTER_MODAL,
-    LOGIN_LOADING
+    LOGIN_LOADING,
+    CLEAR_ERRORS
 } from './types'
 
 // Check token & load user
@@ -77,26 +78,30 @@ export const registerSuccess = (data) => {
     }
 }
 
-export const registerUserAction = ({ firstName, lastName, email, password }) => (dispatch, getState) => {
+export const registerUserAction = ({ firstName, lastName, email, password, userName }) => (dispatch, getState) => {
     dispatch({
         type: REGISTER_LOADING
     })
     const body = JSON.stringify({
-        firstName, lastName, email, password
+        firstName, lastName, email, password, userName
     })
+
+    // console.log(body)
     axios.post('/api/users/signup', body, tokenConfig(getState))
         .then(res => {
             dispatch({
-                type: REGISTER_SUCCESS,
-                payload: res.data
+                type: REGISTER_SUCCESS
+                ,payload: res.data
+            })
+            dispatch({
+                type: CLEAR_ERRORS
             })
         })
         .catch(err => {
-            console.log(err)
-            // dispatch(returnErrors(err.response.msg, err.response.status, 'REGISTER_FAIL'))
-            dispatch(({
+            dispatch(returnErrors(err.response.data.msg, err.response.status, 'REGISTER_FAIL'))
+            dispatch({
                 type: REGISTER_FAIL
-            }))
+            })
         })
 
 }

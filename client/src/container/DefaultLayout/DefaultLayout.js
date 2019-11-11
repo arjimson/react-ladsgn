@@ -70,7 +70,7 @@ const DefaultLayout = () => {
     }
 
     const likeHandler = (id) => {
-        console.log(id, userId);
+      
         const newLike = {
             id: id,
             user: userId

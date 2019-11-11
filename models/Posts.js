@@ -1,17 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const LikeSchema = new Schema({
-    liked: {
-        type: Boolean,
-        required: true
-    },
-    user: {
-        type: String,
-        required: true
-    }
-})
-
 const CommentSchema = new Schema({
     comment: {
         type: String,
@@ -20,6 +9,10 @@ const CommentSchema = new Schema({
     user: {
         type: String,
         required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 })
 
@@ -36,7 +29,9 @@ const PostsSchema = new Schema({
         type: String,
         required: true
     }
-    ,likes: [LikeSchema]
+    ,likes: {
+        type: Array
+    }
     ,comments: [CommentSchema]
     ,created: {
         type: String,

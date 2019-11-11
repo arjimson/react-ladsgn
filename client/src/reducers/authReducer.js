@@ -29,7 +29,7 @@ const initialState = {
     isLoginShow: false,
     isRegisterShow: false,
     isRegisterLoading: false,
-    msg: null
+    msg: ''
 }
 
 export default function(state = initialState, { type, payload }) {
@@ -92,10 +92,11 @@ export default function(state = initialState, { type, payload }) {
                     ,firstName: ''
                     ,lastName: ''
                     ,email: ''
-                },
-                isAuthenticated: false,
-                isLoading: false,
-                isLoginLoading: false
+                }
+                ,msg: payload
+                ,isAuthenticated: false
+                ,isLoading: false
+                ,isLoginLoading: false
             }
         default:
             return state

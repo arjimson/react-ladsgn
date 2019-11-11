@@ -17,6 +17,7 @@ router.post('/signup', (req,res) => {
         ,password
         ,userName
     })
+
     // res.send(newUser)
 
     if(!firstName || !lastName || !email || !password || !userName) {

@@ -59,60 +59,34 @@ router.post('/', upload.single('selectedFile'), (req, res, next) => {
         })
 });
 
-router.post('/like', (req, res) => {
+
+
+router.patch('/like', (req,res) => {
     const { id, user } = req.body;
-    console.log(id, user)
-
-    Posts.findOne({ _id: id })
-        .then(post => {
-            console.log(post)
-            for (const like of post.likes) {
-                if (like.user === user) {
-                    return res.status(400).json({ msg: 'user existed' })
-                }
-            }
-
-            if (post.length > 0) {
-                post.likes.push({ liked: true, user: user })
-                post.save()
-            }
-
-
-
-            // post.save()
-            //     .then(p => {
-            //         res.send(p)
-            //     })
-            //     .catch(err => {
-            //         if(err) throw err
-            //     })
-
-            // res.json({ msg: 'good' })
-
-
-            // post.likes.push({ liked: true, user: user });
-            // post.save()
-            //     .then(() => {
-            //         res.send(post)
-            //     })
-            //     .catch(err => {
-            //         console.log(err)
-            //     })
+    Posts.findOne(
+        {
+             _id: id 
         })
-});
-
-router.post('/unlike', (req, res) => {
-    const { id, user } = req.body.params;
-
-    Posts.findOne({ _id: id })
         .then(post => {
-            const likeId = post.likes.filter(x => x.user === user).map(x => x._id);
+            
+            const checkLikeOrUnlike = post.likes.includes(user);
+            let likeOrUnlike = post.likes;
 
-            post.likes.id(likeId).remove()
-            post.save()
-                .then(() => {
-                    res.send(post)
-                })
+            !checkLikeOrUnlike ? likeOrUnlike.push(user) : likeOrUnlike = likeOrUnlike.filter(res => res !== user)
+            
+            Posts.findOneAndUpdate({
+                _id: id
+            }, {
+                $set: {
+                    likes: likeOrUnlike
+                }
+            }, {
+                new: true
+            }).then(result => {
+                res.send(result);
+            }).catch(err => {
+                if(err) throw err
+            })
         })
 })
 

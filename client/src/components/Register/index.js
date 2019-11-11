@@ -51,6 +51,7 @@ function Register() {
             , email
             , password
         }
+        console.log(newUser)
         dispatch(registerUserAction(newUser));
     }
 
